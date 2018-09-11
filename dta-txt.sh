@@ -2,9 +2,9 @@
 set -e
 xsltproc --version &>/dev/null # needed
 test -d dta_komplett_*/ && cd $_ || {
-    wget http://media.dwds.de/dta/download/dta_komplett_2018-02-23.zip && \
-        unzip dta_komplett_2018-02-23.zip
-    cd dta_komplett_2018-02-23
+    wget http://media.dwds.de/dta/download/dta_komplett_2017-09-01.zip && \
+        unzip dta_komplett_2017-09-01.zip
+    cd dta_komplett_2017-09-01
     }
 mkdir -p txt
 test -f tcf-extract-txt.xsl || cat <<EOF > tcf-extract-txt.xsl
@@ -29,5 +29,5 @@ EOF
 for file in simple/*.xml
 do
     outfile=txt/${file#simple/}
-    xsltproc tei-extract-text.xsl $file > ${outfile%.xml}.txt
+    xsltproc tcf-extract-txt.xsl $file > ${outfile%.xml}.txt
 done
