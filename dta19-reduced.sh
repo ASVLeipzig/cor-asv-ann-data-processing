@@ -1,4 +1,20 @@
 #!/bin/bash
+# OCR single-line images...
+for ocr in deu-frak3 Fraktur4 foo4
+do
+    case $ocr in
+        *3) tessopts="--psm 0 --psm 7";;
+        *4) tessopts="--psm 13";;
+        *) echo "need model version in the last digit: $ocr" >&2; continue
+    esac
+    for file in traindata/*.png testdata/*.png
+    do
+        test $(jobs -r | wc -l) -ge 4 && wait # no more than 4 running jobs in parallel
+        test -e ${file%png}${ocr}.txt || tesseract --psm 13 -l ${ocr%?} $file ${file%png}$ocr &
+        test -e ${file%png}deu-frak3.txt || tesseract --oem 0 --psm 7 -l deu-frak $file ${file%png}deu-frak3 &
+        test -e ${file%png}Fraktur4.txt || tesseract --psm 13 -l Fraktur $file ${file%png}Fraktur4 &
+    done
+done
 # concatenate to csv files (input tab output newline)...
 for ocr in deu-frak3 Fraktur4 foo4
 do
