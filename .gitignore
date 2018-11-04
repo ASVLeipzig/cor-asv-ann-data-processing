@@ -1,0 +1,11 @@
+*~
+*.[oa]
+*.so
+*.orig
+*.py[cod]
+TAGS
+*.egg-info/
+__pycache__/
+build/
+env/
+env3/
