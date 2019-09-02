@@ -19,8 +19,9 @@ def process(language, extension, nprocs, input_files):
     logging.basicConfig()
     log = logging.getLogger('')
     log.setLevel(logging.INFO)
-    if language not in get_languages()[1]:
-        raise Exception("configured language " + language + " is not installed")
+    for sublanguage in language.split('+'):
+        if sublanguage not in get_languages()[1]:
+            raise Exception("configured language " + sublanguage + " is not installed")
     
     def init_worker(worker, log, tessdata_prefix, language, extension):
         from tesserocr import PyTessBaseAPI
