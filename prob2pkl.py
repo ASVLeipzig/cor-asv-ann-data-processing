@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 import csv
 from io import open
+import os.path
 import pickle
 import click
 
@@ -21,7 +22,10 @@ def cli(output_file, input_files):
     
     Put all such lines into one list and dump as `output_file`.
     '''
-    lines = []
+    if os.path.exists(output_file):
+        lines = pickle.load(open(output_file, mode='rb'))
+    else:
+        lines = []
     for ocrname in input_files:
         nameparts = ocrname.split(".")[:-2]
         if nameparts[-1] in ['nrm', 'bin']:
