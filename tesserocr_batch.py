@@ -11,9 +11,6 @@ import click
 @click.option('-Q', '--nprocs', default=1, type=int, help='number of processes to run in parallel')
 @click.argument('input_files', nargs=-1, type=click.Path(exists=True, dir_okay=False))
 def process(language, extension, nprocs, input_files):
-    import locale
-    locale.setlocale(locale.LC_ALL, 'C') # circumvent tesseract-ocr issue 1670 (which cannot be done on command line because Click requires an UTF-8 locale in Python 3)
-    
     from tesserocr import get_languages
     TESSDATA_PREFIX = os.environ['TESSDATA_PREFIX'] if 'TESSDATA_PREFIX' in os.environ else get_languages()[0]
     logging.basicConfig()
@@ -30,7 +27,7 @@ def process(language, extension, nprocs, input_files):
         worker.tessapi = PyTessBaseAPI(path=tessdata_prefix, lang=language)
         worker.extension = extension
         #worker.tessapi.SetVariable("tessedit_create_txt", "1")
-        #worker.tessapi.SetVariable("glyph_confidences", "2")
+        worker.tessapi.SetVariable("lstm_choice_mode", "2")
     with mp.Pool(processes=nprocs,
                  initializer=init_worker,
                  initargs=(process_file, log, TESSDATA_PREFIX, language, extension)) as pool:

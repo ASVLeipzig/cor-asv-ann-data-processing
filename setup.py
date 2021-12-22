@@ -10,7 +10,7 @@ with codecs.open('README.md', encoding='utf-8') as file:
 
 setup(
     name='data-processing',
-    version='0.1',
+    version='0.2',
     description='various tools for data processing',
     long_description=README,
     author='Robert Sachunsky',
@@ -18,10 +18,10 @@ setup(
     license='Apache License 2.0',
     install_requires=[
         'click',
-        'tesserocr >= 2.3.1',
-        'ocrd >= 1.0.0b8',
+        'tesserocr >= 2.5.1',
+        'ocrd >= 2.24',
         'ocrd_tesserocr',
-        'cis-ocrd@git+ssh://git@github.com/cisocrgroup/cis-ocrd-py@dev',
+        'ocrd_cis',
         'pyphen',
     ],
     entry_points={
